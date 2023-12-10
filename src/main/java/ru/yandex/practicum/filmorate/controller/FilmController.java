@@ -35,7 +35,7 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         filmCheckId(film);
-        if(films.containsKey(film.getId())) {
+        if (films.containsKey(film.getId())) {
             log.info("Фильм c id={} обновлен в коллекции", film.getId());
             films.put(film.getId(), film);
             return film;
@@ -45,7 +45,7 @@ public class FilmController {
     }
 
     private void filmCheckId(Film film) {
-        if(film.getId() < 0) {
+        if (film.getId() < 0) {
             log.info("Попытка добавить фильм с id меньше единицы");
             throw new ValidationException("id фильма не может быть отрицательным или 0");
         }
