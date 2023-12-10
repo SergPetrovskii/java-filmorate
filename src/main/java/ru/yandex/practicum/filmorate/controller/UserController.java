@@ -37,7 +37,7 @@ public class UserController {
     public User updateUser(@Valid @RequestBody User user) {
         userCheck(user);
         userCheckId(user);
-        if(users.containsKey(user.getId())) {
+        if (users.containsKey(user.getId())) {
             log.info("Пользователь с id={} успешно заменен", user.getId());
             users.put(user.getId(), user);
             return user;
@@ -47,13 +47,14 @@ public class UserController {
     }
 
     private void userCheck(User user) {
-        if(user.getName() == null || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isBlank()) {
             log.info("Имя пользователя не было указанно, по этому использован его логин");
             user.setName(user.getLogin());
         }
     }
+
     private void userCheckId(User user) {
-        if(user.getId() < 0) {
+        if (user.getId() < 0) {
             log.info("Попытка добавить пользователя с id меньше нуля");
             throw new ValidationException("id не может быть меньше 0");
         }
