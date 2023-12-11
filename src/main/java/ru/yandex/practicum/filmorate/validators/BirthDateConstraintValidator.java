@@ -13,7 +13,7 @@ public class BirthDateConstraintValidator implements ConstraintValidator<BirthDa
 
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext cxt) {
-        if(birthDate == null) {
+        if (birthDate == null) {
             return false;
         }
         return birthDate.isBefore(NOW);
