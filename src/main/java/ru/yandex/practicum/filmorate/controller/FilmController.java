@@ -20,7 +20,7 @@ public class FilmController {
 
     @GetMapping
     public List<Film> getAllFilms() {
-        log.info("Количество фильмов в коллекции {}", films.size());
+        log.debug("Количество фильмов в коллекции {}", films.size());
         return new ArrayList<>(films.values());
     }
 
@@ -28,7 +28,7 @@ public class FilmController {
     public Film createFilms(@Valid @RequestBody Film film) {
         film.setId(filmNextId);
         films.put(filmNextId++, film);
-        log.info("Фильм {} добавлен в коллекцию, id = {}", film.getName(), film.getId());
+        log.debug("Фильм {} добавлен в коллекцию, id = {}", film.getName(), film.getId());
         return film;
     }
 
@@ -36,7 +36,7 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) {
         filmCheckId(film);
         if (films.containsKey(film.getId())) {
-            log.info("Фильм c id={} обновлен в коллекции", film.getId());
+            log.debug("Фильм c id={} обновлен в коллекции", film.getId());
             films.put(film.getId(), film);
             return film;
         }
@@ -46,7 +46,7 @@ public class FilmController {
 
     private void filmCheckId(Film film) {
         if (film.getId() < 0) {
-            log.info("Попытка добавить фильм с id меньше единицы");
+            log.debug("Попытка добавить фильм с id меньше единицы");
             throw new ValidationException("id фильма не может быть отрицательным или 0");
         }
     }

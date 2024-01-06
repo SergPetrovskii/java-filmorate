@@ -20,14 +20,14 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-        log.info("Коллекция пользователей получена, текущее количество {}", users.size());
+        log.debug("Коллекция пользователей получена, текущее количество {}", users.size());
         return new ArrayList<>(users.values());
     }
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         userCheck(user);
-        log.info("Новый пользователь добавлен");
+        log.debug("Новый пользователь добавлен");
         user.setId(userNextId);
         users.put(userNextId++, user);
         return user;
@@ -38,24 +38,24 @@ public class UserController {
         userCheck(user);
         userCheckId(user);
         if (users.containsKey(user.getId())) {
-            log.info("Пользователь с id={} успешно заменен", user.getId());
+            log.debug("Пользователь с id={} успешно заменен", user.getId());
             users.put(user.getId(), user);
             return user;
         }
-        log.info("Попытка изменить пользователя по не существующему id");
+        log.debug("Попытка изменить пользователя по не существующему id");
         throw new ValidationException("Пользователя с данным id нет");
     }
 
     private void userCheck(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
-            log.info("Имя пользователя не было указанно, по этому использован его логин");
+            log.debug("Имя пользователя не было указанно, по этому использован его логин");
             user.setName(user.getLogin());
         }
     }
 
     private void userCheckId(User user) {
         if (user.getId() < 0) {
-            log.info("Попытка добавить пользователя с id меньше нуля");
+            log.debug("Попытка добавить пользователя с id меньше нуля");
             throw new ValidationException("id не может быть меньше 0");
         }
     }
