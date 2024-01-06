@@ -40,6 +40,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation = validator.validate(user);
         Assertions.assertTrue(violation.isEmpty());
     }
+
     @Test
     public void negativeUserIncorrectEmailValidationTest() {
         User user1 = User.builder() //incorrect email
@@ -52,6 +53,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation1 = validator.validate(user1);
         Assertions.assertFalse(violation1.isEmpty());
     }
+
     @Test
     public void negativeUserEmptyEmailValidationTest() {
         User user2 = User.builder() //email is absent
@@ -63,6 +65,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation2 = validator.validate(user2);
         Assertions.assertFalse(violation2.isEmpty());
     }
+
     @Test
     public void negativeUserEmptyLoginValidationTest() {
         User user3 = User.builder() //login is absent
@@ -74,6 +77,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation3 = validator.validate(user3);
         Assertions.assertFalse(violation3.isEmpty());
     }
+
     @Test
     public void negativeUserEmptyBirthDateValidationTest() {
         User user4 = User.builder() //birth date is absent
@@ -85,6 +89,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation4 = validator.validate(user4);
         Assertions.assertFalse(violation4.isEmpty());
     }
+
     @Test
     public void negativeUserIncorrectBirthDateValidationTest() {
 
@@ -98,6 +103,7 @@ public class UserValidatorTest {
         Set<ConstraintViolation<User>> violation5 = validator.validate(user5);
         Assertions.assertFalse(violation5.isEmpty());
     }
+
     @Test
     public void positiveUserEmptyNameValidationTest() {
 
