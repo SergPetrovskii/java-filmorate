@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
     private FilmStorage inMemoryFilmStorage;
+
     @Autowired
     public FilmService(FilmStorage inMemoryFilmStorage) {
         this.inMemoryFilmStorage = inMemoryFilmStorage;
@@ -64,5 +65,4 @@ public class FilmService {
     public Film getFilmForId(int id) {
         return inMemoryFilmStorage.getFilmForId(id).orElseThrow(() -> new ValidationException("При получении id пришел null"));
     }
-
 }
