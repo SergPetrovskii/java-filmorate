@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,12 +8,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Data
 @Builder
 public class Film {
     private int id;
+    private Set<Integer> like;
     @NotBlank
     private String name;
     @NotNull

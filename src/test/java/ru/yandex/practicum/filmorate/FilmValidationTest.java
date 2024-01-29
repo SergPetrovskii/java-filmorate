@@ -5,8 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.controllers.FilmController;
+import ru.yandex.practicum.filmorate.controllers.UserController;
+import ru.yandex.practicum.filmorate.models.Film;
+import ru.yandex.practicum.filmorate.models.User;
+import ru.yandex.practicum.filmorate.services.FilmService;
+import ru.yandex.practicum.filmorate.storages.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storages.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -17,10 +22,17 @@ import java.util.Set;
 
 @SpringBootTest
 public class FilmValidationTest {
-
     private Validator validator;
     @Autowired
     private FilmController filmController;
+    @Autowired
+    private UserController userController;
+    @Autowired
+    private FilmService filmService;
+    @Autowired
+    private InMemoryUserStorage inMemoryUserStorage;
+    @Autowired
+    private InMemoryFilmStorage inMemoryFilmStorage;
 
     @BeforeEach
     public void setUp() {
@@ -107,7 +119,7 @@ public class FilmValidationTest {
     }
 
     @Test
-    public void negativeFilmIncorrectDateOfReliaseValidationTest() {
+    public void negativeFilmIncorrectDateOfReleaseValidationTest() {
         Film film7 = Film.builder() //incorrect date of release
                 .name("testFilm")
                 .duration(60)
@@ -117,5 +129,29 @@ public class FilmValidationTest {
 
         Set<ConstraintViolation<Film>> violation7 = validator.validate(film7);
         Assertions.assertFalse(violation7.isEmpty());
+    }
+
+    @Test
+    public void positiveFilmAddLikeValidationTest() {
+
+        User user = User.builder()
+                .email("test@user.ru")
+                .login("testUser")
+                .name("TestUser")
+                .birthday(LocalDate.of(1993, 3, 25))
+                .build();
+        inMemoryUserStorage.createUser(user);
+
+        Film film8 = Film.builder()
+                .name("testFilm8")
+                .duration(60)
+                .description("testFilm8")
+                .releaseDate(LocalDate.of(2000, 12, 1))
+                .build();
+        inMemoryFilmStorage.createFilms(film8);
+        filmController.addLike(1, 1);
+
+        Set<ConstraintViolation<Film>> violation8 = validator.validate(film8);
+        Assertions.assertTrue(violation8.isEmpty());
     }
 }
