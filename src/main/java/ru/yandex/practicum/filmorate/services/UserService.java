@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.models.User;
 import ru.yandex.practicum.filmorate.storages.UserStorage;
 
@@ -70,11 +69,11 @@ public class UserService {
         return inMemoryUserStorage.updateUser(user);
     }
 
-    public User getUserForId(Integer UserId) {
+    public User getUserForId(Integer userId) {
         Map<Integer, User> users = inMemoryUserStorage.getMapUsers();
-        if (users.containsKey(UserId)) {
-            User user = users.get(UserId);
-            log.debug("Получен пользователь с id {}", UserId);
+        if (users.containsKey(userId)) {
+            User user = users.get(userId);
+            log.debug("Получен пользователь с id {}", userId);
             return user;
         }
         throw new UserNotFoundException("Пользователь с данным id не найден.");
