@@ -25,7 +25,7 @@ public class FilmService {
         if (mapFilm.containsKey(filmId)) {
             inMemoryFilmStorage.addLike(filmId, userId);
             Film film = mapFilm.get(filmId);
-            log.info("Пользователем с id={} поставлен лайк фильму с id={}.", userId, filmId);
+            log.debug("Пользователем с id={} поставлен лайк фильму с id={}.", userId, filmId);
             return film;
         }
         throw new FilmNotFoundException("Фильм не найден.");
@@ -36,14 +36,14 @@ public class FilmService {
         if (mapFilm.containsKey(filmId)) {
             inMemoryFilmStorage.deleteLike(filmId, userId);
             Film film = mapFilm.get(filmId);
-            log.info("Пользователем с id={} был удален лайк с фильма с id={}.", userId, filmId);
+            log.debug("Пользователем с id={} был удален лайк с фильма с id={}.", userId, filmId);
             return film;
         }
         throw new FilmNotFoundException("Фильм не найден.");
     }
 
     public List<Film> getPopularFilms(Integer end) {
-        log.info("Получен список популярных фильмов колличесвом {} фильмов.", end);
+        log.debug("Получен список популярных фильмов колличесвом {} фильмов.", end);
         return inMemoryFilmStorage.getAllFilms().stream()
                 .sorted((o1, o2) -> o2.getLike().size() - o1.getLike().size())
                 .limit(end)

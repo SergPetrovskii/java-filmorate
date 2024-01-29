@@ -22,18 +22,18 @@ public class UserService {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
-    public User userAddFriend(int userId, int friendId) { //метод добавления в друзья
+    public User userAddFriend(Integer userId, Integer friendId) { //метод добавления в друзья
         Map<Integer, User> users = inMemoryUserStorage.getMapUsers();
         if (users.containsKey(userId) && users.containsKey(friendId)) {
             inMemoryUserStorage.addFriend(userId, friendId);
             User user = users.get(userId);
-            log.info("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
+            log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
             return user;
         }
         throw new UserNotFoundException("Пользователь с данным id не найден.");
     }
 
-    public User userDeleteFriend(int userId, int friendId) { //метод удаления из друзей
+    public User userDeleteFriend(Integer userId, Integer friendId) { //метод удаления из друзей
         Map<Integer, User> users = inMemoryUserStorage.getMapUsers();
         if (users.containsKey(userId) && users.containsKey(friendId)) {
             User user = users.get(userId);
@@ -41,13 +41,13 @@ public class UserService {
                 return user;
             }
             inMemoryUserStorage.deleteFriend(userId, friendId);
-            log.info("Пользователь с id {} удалил из друзей пользователя с id {}. ", userId, friendId);
+            log.debug("Пользователь с id {} удалил из друзей пользователя с id {}. ", userId, friendId);
             return user;
         }
         throw new UserNotFoundException("Пользователь с данным id не найден.");
     }
 
-    public List<User> getFriends(int userId, int friendId) { //метод получения списка друзей
+    public List<User> getFriends(Integer userId, Integer friendId) { //метод получения списка друзей
         User user = getUserForId(userId);
         User friend = getUserForId(friendId);
 
@@ -70,8 +70,14 @@ public class UserService {
         return inMemoryUserStorage.updateUser(user);
     }
 
-    public User getUserForId(int id) {
-        return inMemoryUserStorage.getUserForId(id).orElseThrow(() -> new ValidationException("При получении id пришел null"));
+    public User getUserForId(Integer UserId) {
+        Map<Integer, User> users = inMemoryUserStorage.getMapUsers();
+        if (users.containsKey(UserId)) {
+            User user = users.get(UserId);
+            log.debug("Получен пользователь с id {}", UserId);
+            return user;
+        }
+        throw new UserNotFoundException("Пользователь с данным id не найден.");
     }
 
     public List<User> getFriendsUserForId(Integer id) {

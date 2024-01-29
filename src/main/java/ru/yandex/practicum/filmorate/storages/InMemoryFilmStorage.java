@@ -35,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             films.put(film.getId(), film);
             return film;
         }
-        log.info("Попытка изменить фильм по не существующему id");
+        log.debug("Попытка изменить фильм по не существующему id");
         throw new ValidationException("Фильма с данным id нет");
     }
 

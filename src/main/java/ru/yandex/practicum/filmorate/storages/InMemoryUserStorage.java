@@ -18,12 +18,12 @@ public class InMemoryUserStorage implements UserStorage {
     private Map<Integer, User> users = new HashMap<>();
 
     public List<User> getAllUsers() {
-        log.info("Коллекция пользователей получена, текущее количество {}.", users.size());
+        log.debug("Коллекция пользователей получена, текущее количество {}.", users.size());
         return new ArrayList<>(users.values());
     }
 
     public User createUser(User user) {
-        log.info("Новый пользователь добавлен.");
+        log.debug("Новый пользователь добавлен.");
         user.setId(userNextId);
         user.setFriendVault(new TreeSet<>());
         users.put(userNextId++, user);
@@ -32,17 +32,20 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
-            log.info("Пользователь с id={} успешно заменен", user.getId());
+            log.debug("Пользователь с id={} успешно заменен", user.getId());
             user.setFriendVault(new TreeSet<>());
             users.put(user.getId(), user);
             return user;
         }
-        log.info("Попытка изменить пользователя по не существующему id.");
+        log.debug("Попытка изменить пользователя по не существующему id.");
         throw new ValidationException("Пользователя с данным id нет.");
     }
 
-    public Optional<User> getUserForId(int id) {
-        log.info("Получен пользователь с id={}", id);
+    public Optional<User> getUserForId(Integer id) {
+        if (!users.containsKey(id)) {
+            throw new UserNotFoundException("Пользователь не найден.");
+        }
+        log.debug("Получен пользователь с id={}", id);
         return Optional.ofNullable(users.get(id));
     }
 
@@ -57,11 +60,11 @@ public class InMemoryUserStorage implements UserStorage {
                 userList.add(users.get(integer));
             }
         }
-        log.info("Получен список друзей пользователя.");
+        log.debug("Получен список друзей пользователя.");
         return userList;
     }
 
-    public void addFriend(int userId, int friendId) {
+    public void addFriend(Integer userId, Integer friendId) {
         users.get(userId).getFriendVault().add(friendId);
         users.get(friendId).getFriendVault().add(userId);
     }
@@ -70,7 +73,7 @@ public class InMemoryUserStorage implements UserStorage {
         return new HashMap<>(users);
     }
 
-    public void deleteFriend(int userId, int friendId) {
+    public void deleteFriend(Integer userId, Integer friendId) {
         users.get(userId).getFriendVault().remove(friendId);
         users.get(friendId).getFriendVault().remove(userId);
     }

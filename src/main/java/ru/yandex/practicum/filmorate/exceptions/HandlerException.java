@@ -9,28 +9,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
-@RestControllerAdvice("ru.yandex.practicum.filmorate.controller")
+@RestControllerAdvice("ru.yandex.practicum.filmorate.controllers")
 @Slf4j
 public class HandlerException {
 
     @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class, IncorrectIDException.class, ValidationException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserIncorrect(final RuntimeException e) {
-        log.warn("Ошибка пользователя.");
+        log.debug("Ошибка пользователя.");
         return new ErrorResponse("Ошибка пользователя", e.getMessage());
+    }
+
+
+    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse badRequest(final Exception e) {
+        log.debug("Ошибка валидации.");
+        return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse serverError(final Throwable e) {
-        log.warn("Неизвестная ошибка.");
+        log.debug("Неизвестная ошибка.");
         return new ErrorResponse("Что-то пошло не так(", e.getMessage());
-    }
-
-    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse badRequest(final Exception e) {
-        log.warn("Ошибка валидации.");
-        return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 }
