@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}") //геттер по айди
-    public User getUserForId(@PathVariable int id) {
+    public User getUserForId(@PathVariable("id") Integer id) {
         checkUserId(id);
         return userService.getUserForId(id);
     }
