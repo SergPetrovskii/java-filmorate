@@ -40,9 +40,13 @@ public class InMemoryFilmStorage implements FilmStorage {
         throw new ValidationException("Фильма с данным id нет");
     }
 
-    public Film getFilmForId(int id) {
-        log.debug("Получен фильм с id={}", id);
-        return films.get(id);
+    public Film getFilmForId(int filmId) {
+        if (films.containsKey(filmId)){
+        log.debug("Получен фильм с id={}", filmId);
+        return films.get(filmId);
+        } else {
+            throw new FilmNotFoundException("Фильм не найден.");
+        }
     }
 
     public void addLike(Integer filmId, Integer userId) {
@@ -59,7 +63,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(filmId)) {
             Film film = films.get(filmId);
             film.getLike().remove(userId);
-
             log.debug("Пользователем с id={} был удален лайк с фильма с id={}.", userId, filmId);
         } else {
             throw new FilmNotFoundException("Фильм не найден.");
