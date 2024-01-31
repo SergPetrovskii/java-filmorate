@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.models.Film;
 import javax.validation.ValidationException;
 import java.util.*;
@@ -39,20 +40,25 @@ public class InMemoryFilmStorage implements FilmStorage {
         throw new ValidationException("Фильма с данным id нет");
     }
 
-    public Optional<Film> getFilmForId(int id) {
+    public Film getFilmForId(int id) {
         log.debug("Получен фильм с id={}", id);
-        return Optional.ofNullable(films.get(id));
+        return films.get(id);
     }
 
-    public Map<Integer, Film> getMapFilms() {
-        return new HashMap<>(films);
-    }
 
     public void addLike(Integer filmId, Integer userId) {
-        films.get(filmId).getLike().add(userId);
+        if (films.containsKey(filmId)) {
+            films.get(filmId).getLike().add(userId);
+            log.debug("Пользователем с id={} поставлен лайк фильму с id={}.", userId, filmId);
+        }
+        throw new FilmNotFoundException("Фильм не найден.");
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
-        films.get(filmId).getLike().remove(userId);
+        if (films.containsKey(filmId)) {
+            films.get(filmId).getLike().remove(userId);
+            log.debug("Пользователем с id={} был удален лайк с фильма с id={}.", userId, filmId);
+        }
+        throw new FilmNotFoundException("Фильм не найден.");
     }
 }

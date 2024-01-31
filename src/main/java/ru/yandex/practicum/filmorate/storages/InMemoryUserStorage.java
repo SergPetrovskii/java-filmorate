@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storages;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
@@ -25,7 +24,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User createUser(User user) {
         log.debug("Новый пользователь добавлен.");
         user.setId(userNextId);
-        user.setFriendVault(new TreeSet<>());
+        user.setFriendIds(new TreeSet<>());
         users.put(userNextId++, user);
         return user;
     }
@@ -33,7 +32,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
             log.debug("Пользователь с id={} успешно заменен", user.getId());
-            user.setFriendVault(new TreeSet<>());
+            user.setFriendIds(new TreeSet<>());
             users.put(user.getId(), user);
             return user;
         }
@@ -41,19 +40,19 @@ public class InMemoryUserStorage implements UserStorage {
         throw new ValidationException("Пользователя с данным id нет.");
     }
 
-    public Optional<User> getUserForId(Integer id) {
+    public User getUserForId(Integer id) {
         if (!users.containsKey(id)) {
             throw new UserNotFoundException("Пользователь не найден.");
         }
         log.debug("Получен пользователь с id={}", id);
-        return Optional.ofNullable(users.get(id));
+        return users.get(id);
     }
 
     public List<User> getFriendsUserForId(Integer id) {
         if (!users.containsKey(id)) {
             throw new UserNotFoundException("Пользователь не найден.");
         }
-        Set<Integer> userNumberList = users.get(id).getFriendVault();
+        Set<Integer> userNumberList = users.get(id).getFriendIds();
         List<User> userList = new ArrayList<>();
         for (Integer integer : users.keySet()) {
             if (userNumberList.contains(integer)) {
@@ -65,16 +64,23 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public void addFriend(Integer userId, Integer friendId) {
-        users.get(userId).getFriendVault().add(friendId);
-        users.get(friendId).getFriendVault().add(userId);
-    }
-
-    public Map<Integer, User> getMapUsers() {
-        return new HashMap<>(users);
+        if (users.containsKey(userId) && users.containsKey(friendId)) {
+            users.get(userId).getFriendIds().add(friendId);
+            users.get(friendId).getFriendIds().add(userId);
+            log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
+        }
+        throw new UserNotFoundException("Пользователь с данным id не найден.");
     }
 
     public void deleteFriend(Integer userId, Integer friendId) {
-        users.get(userId).getFriendVault().remove(friendId);
-        users.get(friendId).getFriendVault().remove(userId);
+        if (users.containsKey(userId) && users.containsKey(friendId)) {
+            User user = users.get(userId);
+            if (!user.getFriendIds().contains(friendId)) {
+                users.get(userId).getFriendIds().remove(friendId);
+                users.get(friendId).getFriendIds().remove(userId);
+                log.debug("Пользователь с id {} удалил из друзей пользователя с id {}. ", userId, friendId);
+            }
+            throw new UserNotFoundException("Пользователь с данным id не найден.");
+        }
     }
 }

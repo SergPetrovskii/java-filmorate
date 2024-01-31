@@ -16,7 +16,7 @@ import java.util.Set;
 public class User {
     @NotNull
     private int id;
-    private Set<Integer> friendVault;
+    private Set<Integer> friendIds;
     @Email
     @NotBlank
     private String email;

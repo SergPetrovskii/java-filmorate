@@ -26,38 +26,38 @@ public class FilmController {
     }
 
     @GetMapping
-    public List<Film> getAllFilms() { //получение все фильмов
+    public List<Film> getAllFilms() {
         return filmService.getAllFilms();
     }
 
     @PostMapping
-    public Film createFilms(@Valid @RequestBody Film film) { //создание фильма
+    public Film createFilms(@Valid @RequestBody Film film) {
         return filmService.createFilms(film);
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) { //обновление фильма
+    public Film updateFilm(@Valid @RequestBody Film film) {
         return filmService.updateFilm(film);
     }
 
-    @PutMapping("/{id}/like/{userId}") //добавление лайка
+    @PutMapping("/{id}/like/{userId}")
     public Film addLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
         checkId(id, userId);
         return filmService.addLike(id, userId);
     }
 
-    @DeleteMapping("/{id}/like/{userId}") //удаление лайка
+    @DeleteMapping("/{id}/like/{userId}")
     public Film deleteLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
         checkId(id, userId);
         return filmService.deleteLike(id, userId);
     }
 
-    @GetMapping("/popular") //список популярных фильмов
+    @GetMapping("/popular")
     public List<Film> getPopularFilms(@Positive @RequestParam(defaultValue = "10") Integer count) {
         return filmService.getPopularFilms(count);
     }
 
-    @GetMapping("/{id}") //получение фильма по айди
+    @GetMapping("/{id}")
     public Film getFilmForId(@PathVariable("id") int id) {
         return filmService.getFilmForId(id);
     }
