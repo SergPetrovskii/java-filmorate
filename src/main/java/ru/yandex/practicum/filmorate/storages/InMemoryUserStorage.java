@@ -41,26 +41,29 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public User getUserForId(Integer id) {
-        if (!users.containsKey(id)) {
+        if (users.containsKey(id)) {
+            log.debug("Получен пользователь с id={}", id);
+            return users.get(id);
+        } else {
             throw new UserNotFoundException("Пользователь не найден.");
         }
-        log.debug("Получен пользователь с id={}", id);
-        return users.get(id);
+
     }
 
     public List<User> getFriendsUserForId(Integer id) {
-        if (!users.containsKey(id)) {
+        if (users.containsKey(id)) {
+            Set<Integer> userNumberList = users.get(id).getFriendIds();
+            List<User> userList = new ArrayList<>();
+            for (Integer integer : users.keySet()) {
+                if (userNumberList.contains(integer)) {
+                    userList.add(users.get(integer));
+                }
+            }
+            log.debug("Получен список друзей пользователя.");
+            return userList;
+        } else {
             throw new UserNotFoundException("Пользователь не найден.");
         }
-        Set<Integer> userNumberList = users.get(id).getFriendIds();
-        List<User> userList = new ArrayList<>();
-        for (Integer integer : users.keySet()) {
-            if (userNumberList.contains(integer)) {
-                userList.add(users.get(integer));
-            }
-        }
-        log.debug("Получен список друзей пользователя.");
-        return userList;
     }
 
     public void addFriend(Integer userId, Integer friendId) {
