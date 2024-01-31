@@ -40,8 +40,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         throw new ValidationException("Фильма с данным id нет");
     }
 
-    public Film getFilmForId(int filmId) {
-        if (films.containsKey(filmId)){
+    public Film getFilmForId(Integer filmId) {
+        if (films.containsKey(filmId)) {
         log.debug("Получен фильм с id={}", filmId);
         return films.get(filmId);
         } else {
