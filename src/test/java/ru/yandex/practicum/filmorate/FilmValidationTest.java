@@ -149,7 +149,7 @@ public class FilmValidationTest {
                 .releaseDate(LocalDate.of(2000, 12, 1))
                 .build();
         inMemoryFilmStorage.createFilms(film8);
-        filmController.addLike(1, 1);
+        inMemoryFilmStorage.addLike(1, 1);
 
         Set<ConstraintViolation<Film>> violation8 = validator.validate(film8);
         Assertions.assertTrue(violation8.isEmpty());
