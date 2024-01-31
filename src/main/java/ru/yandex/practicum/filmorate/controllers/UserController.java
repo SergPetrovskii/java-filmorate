@@ -25,48 +25,48 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() { //геттер для пользователей
+    public List<User> getAllUsers() {
             return userService.getAllUsers();
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) { //создание пользователя
+    public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) { //обновление пользователя
+    public User updateUser(@Valid @RequestBody User user) {
         return userService.updateUser(user);
     }
 
-    @PutMapping("/{id}/friends/{friendId}") //добавление в друзья
+    @PutMapping("/{id}/friends/{friendId}")
     public User userAddFriend(@PathVariable("id") final Integer userId,
     @PathVariable("friendId") final Integer friendId) {
         checkIdUserAndFriend(userId, friendId);
         return userService.userAddFriend(userId, friendId);
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}") //удаление из друзей
+    @DeleteMapping("/{id}/friends/{friendId}")
     public User userDeleteFriend(@PathVariable("id") final Integer userId,
     @PathVariable("friendId") final Integer friendId) {
         checkIdUserAndFriend(userId, friendId);
         return userService.userDeleteFriend(userId, friendId);
     }
 
-    @GetMapping("/{id}/friends/common/{otherId}")//геттер для списка общих друзей
+    @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getListFriend(@PathVariable("id") final Integer userId,
     @PathVariable("otherId") final Integer friendId) {
         checkIdUserAndFriend(userId, friendId);
         return userService.getFriends(userId, friendId);
     }
 
-    @GetMapping("/{id}") //геттер по айди
+    @GetMapping("/{id}")
     public User getUserForId(@PathVariable("id") Integer id) {
         checkUserId(id);
         return userService.getUserForId(id);
     }
 
-    @GetMapping("/{id}/friends")//получение списка друзей пользователя
+    @GetMapping("/{id}/friends")
     public List<User> getFriendsUserForId(@PathVariable("id") Integer id) {
         checkUserId(id);
         return userService.getFriendsUserForId(id);

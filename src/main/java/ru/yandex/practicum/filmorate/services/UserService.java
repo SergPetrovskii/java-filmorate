@@ -20,19 +20,19 @@ public class UserService {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
-    public User userAddFriend(Integer userId, Integer friendId) { //метод добавления в друзья
+    public User userAddFriend(Integer userId, Integer friendId) {
             inMemoryUserStorage.addFriend(userId, friendId);
             log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
             return inMemoryUserStorage.getUserForId(userId);
     }
 
-    public User userDeleteFriend(Integer userId, Integer friendId) { //метод удаления из друзей
+    public User userDeleteFriend(Integer userId, Integer friendId) {
             inMemoryUserStorage.deleteFriend(userId, friendId);
             log.debug("Пользователь с id {} удалил из друзей пользователя с id {}. ", userId, friendId);
             return inMemoryUserStorage.getUserForId(userId);
     }
 
-    public List<User> getFriends(Integer userId, Integer friendId) { //метод получения списка друзей
+    public List<User> getFriends(Integer userId, Integer friendId) {
         User user = getUserForId(userId);
         User friend = getUserForId(friendId);
 
