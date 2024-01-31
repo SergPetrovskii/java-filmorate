@@ -68,8 +68,9 @@ public class InMemoryUserStorage implements UserStorage {
             users.get(userId).getFriendIds().add(friendId);
             users.get(friendId).getFriendIds().add(userId);
             log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
+        } else {
+            throw new UserNotFoundException("Пользователь с данным id не найден.");
         }
-        throw new UserNotFoundException("Пользователь с данным id не найден.");
     }
 
     public void deleteFriend(Integer userId, Integer friendId) {
@@ -80,6 +81,7 @@ public class InMemoryUserStorage implements UserStorage {
                 users.get(friendId).getFriendIds().remove(userId);
                 log.debug("Пользователь с id {} удалил из друзей пользователя с id {}. ", userId, friendId);
             }
+        } else {
             throw new UserNotFoundException("Пользователь с данным id не найден.");
         }
     }
