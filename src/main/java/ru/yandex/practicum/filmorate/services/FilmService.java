@@ -50,7 +50,7 @@ public class FilmService {
     }
 
     public Film getFilmForId(Integer id) {
-        if(id != null){
+        if (id != null) {
             return inMemoryFilmStorage.getFilmForId(id);
         }
         throw new ValidationException("При получении id пришел null");
