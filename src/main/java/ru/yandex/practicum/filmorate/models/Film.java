@@ -8,14 +8,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 
 @Data
 @Builder
 public class Film {
     private int id;
-    private Set<Integer> like;
     @NotBlank
     private String name;
     @NotNull
@@ -26,4 +25,10 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private long duration;
+    private LinkedHashSet<Genre> genres;
+    public void addGenre(Genre genre) {
+        genres.add(genre);
+    }
+    @NotNull
+    private Mpa mpa;
 }

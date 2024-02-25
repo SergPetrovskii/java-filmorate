@@ -13,7 +13,8 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class HandlerException {
 
-    @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class, IncorrectIDException.class, ValidationException.class})
+    @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class, IncorrectIDException.class,
+            ValidationException.class, GenreNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserIncorrect(final RuntimeException e) {
         log.debug("Ошибка пользователя.");

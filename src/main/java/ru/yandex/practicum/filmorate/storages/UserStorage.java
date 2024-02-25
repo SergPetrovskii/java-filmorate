@@ -12,7 +12,7 @@ public interface UserStorage {
 
     void addFriend(Integer userId, Integer friendId);
 
-        void deleteFriend(Integer userId, Integer friendId);
+    void deleteFriend(Integer userId, Integer friendId);
 
     User getUserForId(Integer id);
 

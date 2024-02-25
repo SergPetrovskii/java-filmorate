@@ -40,50 +40,28 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public User userAddFriend(@PathVariable("id") final Integer userId,
-    @PathVariable("friendId") final Integer friendId) {
-        checkIdUserAndFriend(userId, friendId);
-        return userService.userAddFriend(userId, friendId);
+    public void userAddFriend(@PathVariable("id") final Integer userId, @PathVariable("friendId") final Integer friendId) {
+        userService.userAddFriend(userId, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public User userDeleteFriend(@PathVariable("id") final Integer userId,
-    @PathVariable("friendId") final Integer friendId) {
-        checkIdUserAndFriend(userId, friendId);
-        return userService.userDeleteFriend(userId, friendId);
+    public void userDeleteFriend(@PathVariable("id") final Integer userId, @PathVariable("friendId") final Integer friendId) {
+        userService.userDeleteFriend(userId, friendId);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getListFriend(@PathVariable("id") final Integer userId,
     @PathVariable("otherId") final Integer friendId) {
-        checkIdUserAndFriend(userId, friendId);
         return userService.getFriends(userId, friendId);
     }
 
     @GetMapping("/{id}")
     public User getUserForId(@PathVariable("id") Integer id) {
-        checkUserId(id);
         return userService.getUserForId(id);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriendsUserForId(@PathVariable("id") Integer id) {
-        checkUserId(id);
         return userService.getFriendsUserForId(id);
-    }
-
-    private void checkUserId(Integer id) {
-        if (id <= 0) {
-            throw new IncorrectIDException("Параметр id пользователя имеет отрицательное значение.");
-        }
-    }
-
-    private void checkIdUserAndFriend(Integer idUser, Integer idFriend) {
-        if (idUser <= 0) {
-            throw new IncorrectIDException("Параметр id пользователя имеет отрицательное значение.");
-        }
-        if (idFriend <= 0) {
-            throw new IncorrectIDException("Параметр id друга имеет отрицательное значение.");
-        }
     }
 }
