@@ -9,7 +9,7 @@ import ru.yandex.practicum.filmorate.models.User;
 import ru.yandex.practicum.filmorate.storages.UserStorage;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 @Slf4j
@@ -17,18 +17,20 @@ public class UserService {
 
     private UserStorage userDbStorage;
     private FriendshipService friendshipService;
+
     @Autowired
     public UserService(UserDbStorage userDbStorage, FriendshipService friendshipService) {
         this.userDbStorage = userDbStorage;
         this.friendshipService = friendshipService;
     }
 
-        public void userAddFriend(int userId, int friendId) {
-            if (userDbStorage.getUserForId(userId) == null || userDbStorage.getUserForId(friendId) == null) {
-                throw new UserNotFoundException("Пользователь с данным id не найден.");
-            }else{
+    public void userAddFriend(int userId, int friendId) {
+        if (userDbStorage.getUserForId(userId) == null || userDbStorage.getUserForId(friendId) == null) {
+            throw new UserNotFoundException("Пользователь с данным id не найден.");
+        } else {
             friendshipService.addFriend(userId, friendId);
-            log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);}
+            log.debug("Пользователь с id {} добавил пользователя с id {} в друзья. ", userId, friendId);
+        }
     }
 
     public void userDeleteFriend(int userId, int friendId) {
