@@ -26,9 +26,11 @@ public class Film {
     @Positive
     private long duration;
     private LinkedHashSet<Genre> genres;
+    @NotNull
+    private Mpa mpa;
+
     public void addGenre(Genre genre) {
         genres.add(genre);
     }
-    @NotNull
-    private Mpa mpa;
+
 }
