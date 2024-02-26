@@ -41,9 +41,9 @@ public class LikeDbStorage implements LikeStorage {
                 " GROUP BY FILMS.ID " +
                 " ORDER BY COUNT(USER_ID) " +
                 " DESC limit ?";
-        List<Film> filmId = jdbcTemplate.query(sqlFilms, this::getFilmId, end);
+        List<Film> films = jdbcTemplate.query(sqlFilms, this::getFilmId, end);
 
-        return filmId;
+        return films;
     }
 
     private Film getFilmId(ResultSet resultSet, int rowNum) throws SQLException {

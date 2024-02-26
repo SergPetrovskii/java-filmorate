@@ -88,7 +88,9 @@ public class GenreDbStorage implements GenreStorage {
 
         jdbcTemplate.query(sqlQuery, (rs) -> {
             final Film film = filmById.get(rs.getInt("ID"));
+            if (film != null) {
             film.addGenre(findGenre(rs, 0));
+            }
         }, films.stream().map(Film::getId).toArray());
     }
 }
