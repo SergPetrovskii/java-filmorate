@@ -106,8 +106,8 @@ public class FilmDbStorage implements FilmStorage {
                 .releaseDate(resultSet.getDate("RELEASE_DATE").toLocalDate())
                 .duration(resultSet.getLong("DURATION"))
                 .mpa(Mpa.builder()
-                        .id(resultSet.getInt("MPA_ID"))
-                        .name(resultSet.getString("MPA_NAME")).build())
+                        .id(resultSet.getInt("ID"))
+                        .name(resultSet.getString("NAME")).build())
                 .genres(new LinkedHashSet<>())
                 .build();
     }

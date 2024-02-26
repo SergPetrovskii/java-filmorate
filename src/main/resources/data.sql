@@ -28,7 +28,7 @@ merge into MPA
     when not matched then
         insert (ID, NAME) values (incoming.ID, incoming.NAME)
     when matched then
-        update set MPA_NAME = incoming.MPA_NAME;
+        update set NAME = incoming.NAME;
 
 merge into MPA
     using values (5, 'NC-17') as incoming(ID,NAME)
