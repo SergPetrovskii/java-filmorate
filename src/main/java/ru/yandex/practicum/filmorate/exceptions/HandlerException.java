@@ -16,7 +16,7 @@ public class HandlerException {
     @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class, IncorrectIDException.class,
             ValidationException.class, GenreNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserIncorrect(final RuntimeException e) {
+    public ErrorResponse notFoundError(final RuntimeException e) {
         log.debug("Ошибка пользователя.");
         return new ErrorResponse("Ошибка пользователя", e.getMessage());
     }
