@@ -37,7 +37,7 @@ public class LikeDbStorage implements LikeStorage {
     public List<Film> getPopularFilms(Integer end) {
         String sqlFilms = "select * " +
                 " from LIKES right JOIN FILMS ON LIKES.FILM_ID = FILMS.ID " +
-                " join MPA on FILMS.MPA_ID = MPA.ID " +
+                " join MPA on FILMS.MPA_ID = MPA.MPA_ID " +
                 " GROUP BY FILMS.ID " +
                 " ORDER BY COUNT(USER_ID) " +
                 " DESC limit ?;";
