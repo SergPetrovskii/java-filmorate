@@ -38,13 +38,13 @@ public class FilmService {
 
     public List<Film> getPopularFilms(Integer end) {
         log.debug("Получен список популярных фильмов колличесвом {} фильмов.", end);
-        List<Film> list = likeService.getPopularFilms(end);
-        genreService.load(list);
-        return list;
+        List<Film> films = likeService.getPopularFilms(end);
+        genreService.load(films);
+        return films;
     }
 
     public List<Film> getAllFilms() {
-        List<Film> films = filmStorage.getAllFilms();;
+        List<Film> films = filmStorage.getAllFilms();
         genreService.load(films);
         return films;
     }

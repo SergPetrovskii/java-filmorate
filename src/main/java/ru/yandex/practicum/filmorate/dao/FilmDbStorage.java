@@ -56,20 +56,20 @@ public class FilmDbStorage implements FilmStorage {
     public Film updateFilm(Film film) {
         if (getFilmForId(film.getId()) == null) {
             throw new FilmNotFoundException("Нет такого фильма");
+        } else {
+            String sqlQuery = "update FILMS set " +
+                    "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
+                    "where ID = ?";
+
+            jdbcTemplate.update(sqlQuery,
+                    film.getName(),
+                    film.getDescription(),
+                    film.getReleaseDate(),
+                    film.getDuration(),
+                    film.getMpa().getId(),
+                    film.getId());
+            return film;
         }
-
-        String sqlQuery = "update FILMS set " +
-                "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
-                "where ID = ?";
-
-        jdbcTemplate.update(sqlQuery,
-                film.getName(),
-                film.getDescription(),
-                film.getReleaseDate(),
-                film.getDuration(),
-                film.getMpa().getId(),
-                film.getId());
-        return film;
     }
 
     @Override
