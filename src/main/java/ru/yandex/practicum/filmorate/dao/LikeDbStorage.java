@@ -40,7 +40,7 @@ public class LikeDbStorage implements LikeStorage {
                 " join MPA on FILMS.MPA_ID = MPA.MPA_ID " +
                 " GROUP BY FILMS.ID " +
                 " ORDER BY COUNT(USER_ID) " +
-                " DESC limit ?;";
+                " DESC limit ?";
         List<Film> filmId = jdbcTemplate.query(sqlFilms, this::getFilmId, end);
 
         return filmId;
