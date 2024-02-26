@@ -25,15 +25,17 @@ public class FilmService {
     public void addLike(Integer filmId, Integer userId) {
         if (userId < 0) {
             throw new ValidationException("id пользователя должен быть положительным");
+        } else {
+            likeService.addLike(filmId, userId);
         }
-        likeService.addLike(filmId, userId);
     }
 
     public void deleteLike(Integer filmId, Integer userId) {
         if (userId < 0) {
             throw new ValidationException("id пользователя должен быть положительным");
+        } else {
+            likeService.deleteLike(filmId, userId);
         }
-        likeService.deleteLike(filmId, userId);
     }
 
     public List<Film> getPopularFilms(Integer end) {
@@ -73,7 +75,8 @@ public class FilmService {
             Film film = filmStorage.getFilmForId(id);
             genreService.load(List.of(film));
             return film;
+        } else {
+            throw new ValidationException("При получении id пришел null");
         }
-        throw new ValidationException("При получении id пришел null");
     }
 }
