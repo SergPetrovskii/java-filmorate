@@ -48,14 +48,14 @@ public class LikeDbStorage implements LikeStorage {
 
     private Film getFilmId(ResultSet resultSet, int rowNum) throws SQLException {
         return Film.builder()
-                .id(resultSet.getInt("FILMS.ID"))
+                .id(resultSet.getInt("ID"))
                 .name(resultSet.getString("NAME"))
                 .description(resultSet.getString("DESCRIPTION"))
                 .releaseDate(resultSet.getDate("RELEASE_DATE").toLocalDate())
                 .duration(resultSet.getLong("DURATION"))
                 .mpa(Mpa.builder()
-                        .id(resultSet.getInt("ID"))
-                        .name(resultSet.getString("NAME")).build())
+                        .id(resultSet.getInt("MPA_ID"))
+                        .name(resultSet.getString("MPA_NAME")).build())
                 .genres(new LinkedHashSet<>())
                 .build();
     }
