@@ -60,7 +60,7 @@ public class FilmDbStorage implements FilmStorage {
 
         String sqlQuery = "update FILMS set " +
                 "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
-                "where FILM_ID = ?";
+                "where ID = ?";
 
         jdbcTemplate.update(sqlQuery,
                 film.getName(),
@@ -100,8 +100,8 @@ public class FilmDbStorage implements FilmStorage {
 
     private Film findFilm(ResultSet resultSet, int rowNum) throws SQLException {
         return Film.builder()
-                .id(resultSet.getInt("FILM_ID"))
-                .name(resultSet.getString("FILM_NAME"))
+                .id(resultSet.getInt("ID"))
+                .name(resultSet.getString("NAME"))
                 .description(resultSet.getString("DESCRIPTION"))
                 .releaseDate(resultSet.getDate("RELEASE_DATE").toLocalDate())
                 .duration(resultSet.getLong("DURATION"))
