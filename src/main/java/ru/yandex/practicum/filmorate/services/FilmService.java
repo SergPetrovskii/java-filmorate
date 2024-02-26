@@ -45,7 +45,7 @@ public class FilmService {
 
     public List<Film> getAllFilms() {
         List<Film> films = filmStorage.getAllFilms();
-        genreService.load(films);
+        //genreService.load(films);
         return films;
     }
 
