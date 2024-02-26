@@ -26,7 +26,7 @@ public class MpaDbStorage implements MpaStorage {
 
     @Override
     public Mpa getMpaById(Integer id) {
-        String sqlMpa = "select * from MPA where ID = ?";
+        String sqlMpa = "select * from MPA where MPA_ID = ?";
         try {
             return jdbcTemplate.queryForObject(sqlMpa, this::findMpa, id);
         } catch (RuntimeException e) {
@@ -36,8 +36,8 @@ public class MpaDbStorage implements MpaStorage {
 
     private Mpa findMpa(ResultSet resultSet, int i) throws SQLException {
         return Mpa.builder()
-                .id(resultSet.getInt("ID"))
-                .name(resultSet.getString("NAME"))
+                .id(resultSet.getInt("MPA_ID"))
+                .name(resultSet.getString("MPA_NAME"))
                 .build();
     }
 }

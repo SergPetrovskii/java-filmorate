@@ -1,7 +1,7 @@
 create table IF NOT EXISTS MPA
 (
-    ID   INTEGER primary key,
-    NAME CHARACTER VARYING not null
+    MPA_ID   INTEGER primary key,
+    MPA_NAME CHARACTER VARYING not null
 );
 
 create table IF NOT EXISTS FILMS
@@ -15,7 +15,7 @@ create table IF NOT EXISTS FILMS
     constraint FILMS_PK
         PRIMARY KEY  (ID),
     constraint FILMS_RATING_MPA_ID_FK
-        foreign key (MPA_ID) references MPA(ID)
+        foreign key (MPA_ID) references MPA(MPA_ID)
 );
 
 create table IF NOT EXISTS GENRES

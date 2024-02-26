@@ -26,8 +26,8 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> getAllFilms() {
-        String sqlQuery = "select * " +
-                "from FILMS ";
+        String sqlQuery = "select FILMS.ID, FILMS.NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_ID, " +
+                "GENRE_FILM.GENRE_ID from FILMS left join FILMS_GENRES on FILMS.ID = FILMS_GENRES.FILM_ID ";
         return jdbcTemplate.query(sqlQuery, this::findFilm);
     }
 
@@ -89,7 +89,7 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film getFilmForId(int id) {
         String sqlQuery = "select * " +
-                "from  MPA, FILMS  where FILMS.MPA_ID = MPA.ID and FILMS.ID = ?";
+                "from  MPA, FILMS  where FILMS.MPA_ID = MPA.MPA_ID and FILMS.ID = ?";
         try {
             return jdbcTemplate.query(sqlQuery, this::findFilm, id).iterator().next();
         } catch (RuntimeException e) {
@@ -105,8 +105,8 @@ public class FilmDbStorage implements FilmStorage {
                 .releaseDate(resultSet.getDate("RELEASE_DATE").toLocalDate())
                 .duration(resultSet.getLong("DURATION"))
                 .mpa(Mpa.builder()
-                        .id(resultSet.getInt("ID"))
-                        .name(resultSet.getString("NAME")).build())
+                        .id(resultSet.getInt("MPA_ID"))
+                        .name(resultSet.getString("MPA_NAME")).build())
                 .genres(new LinkedHashSet<>())
                 .build();
     }
