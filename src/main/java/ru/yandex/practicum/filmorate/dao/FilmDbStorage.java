@@ -84,11 +84,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film getFilmForId(Integer id) {
-        return null;
-    }
-
-    @Override
-    public Film getFilmForId(int id) {
         String sqlQuery = "select * " +
                 "from  MPA, FILMS  where FILMS.MPA_ID = MPA.MPA_ID and FILMS.ID = ?";
         try {
