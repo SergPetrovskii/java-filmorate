@@ -39,7 +39,7 @@ public class FilmDbStorage implements FilmStorage {
         String sqlQuery = "insert into FILMS (NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_ID)"
                 + " values(?,?,?,?,?)";
         jdbcTemplate.update(connection -> {
-            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"FILM_ID"});
+            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"ID"});
             stmt.setString(1, film.getName());
             stmt.setString(2, film.getDescription());
             stmt.setDate(3, Date.valueOf(film.getReleaseDate()));
