@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.models.Film;
 import ru.yandex.practicum.filmorate.storages.FilmStorage;
-import java.util.*;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -62,11 +63,9 @@ public class FilmService {
     public Film updateFilm(Film film) {
         if (film.getGenres() != null) {
             genreService.deleteGenre(film.getId());
-        }
-        filmStorage.updateFilm(film);
-        if (film.getGenres() != null) {
             genreService.addGenre(film);
         }
+        filmStorage.updateFilm(film);
         return film;
     }
 
@@ -76,7 +75,7 @@ public class FilmService {
             genreService.load(List.of(film));
             return film;
         } else {
-            throw new ValidationException("При получении id пришел null");
+            throw new ValidationException("Необходимо указать id фильма - вместо id пришел null");
         }
     }
 }

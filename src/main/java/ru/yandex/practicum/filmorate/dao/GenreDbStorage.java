@@ -11,7 +11,9 @@ import ru.yandex.practicum.filmorate.storages.GenreStorage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
@@ -42,19 +44,19 @@ public class GenreDbStorage implements GenreStorage {
     }
 
     public void deleteGenre(int id) {
-        String a = "delete from FILMS_GENRES where FILM_ID = ?";
-        jdbcTemplate.update(a, id);
+        String deleteGenreRequest = "delete from FILMS_GENRES where FILM_ID = ?";
+        jdbcTemplate.update(deleteGenreRequest, id);
     }
 
     public void addGenre(Film film) {
-        String addGenre = "insert into FILMS_GENRES (FILM_ID, GENRE_ID) values(?,?)";
+        String addGenreRequest = "insert into FILMS_GENRES (FILM_ID, GENRE_ID) values(?,?)";
 
         List<Integer> genres = film.getGenres()
                 .stream()
-                .map(s -> s.getId())
+                .map(Genre::getId)
                 .collect(Collectors.toList());
 
-        jdbcTemplate.batchUpdate(addGenre, new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate(addGenreRequest, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setInt(1, film.getId());
@@ -67,14 +69,13 @@ public class GenreDbStorage implements GenreStorage {
             }
         });
     }
-
+//
 
     private Genre findGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("ID"))
                 .name(resultSet.getString("NAME"))
                 .build();
-
     }
 
     @Override
@@ -87,9 +88,9 @@ public class GenreDbStorage implements GenreStorage {
                 "FILMS_GENRES fg where fg.GENRE_ID = g.ID AND fg.FILM_ID in (" + inSql + ")";
 
         jdbcTemplate.query(sqlQuery, (rs) -> {
-            final Film film = filmById.get(rs.getInt("ID"));
+            final Film film = filmById.get(rs.getInt("FILM_ID"));
             if (film != null) {
-            film.addGenre(findGenre(rs, 0));
+                film.addGenre(findGenre(rs, 0));
             }
         }, films.stream().map(Film::getId).toArray());
     }

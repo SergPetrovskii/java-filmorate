@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.models.Mpa;
 import ru.yandex.practicum.filmorate.storages.MpaStorage;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +22,7 @@ public class MpaDbStorage implements MpaStorage {
     @Override
     public List<Mpa> getMpaList() {
         String sqlMpa = "select * from MPA ";
-        return jdbcTemplate.query(sqlMpa,this::findMpa);
+        return jdbcTemplate.query(sqlMpa, this::findMpa);
     }
 
     @Override

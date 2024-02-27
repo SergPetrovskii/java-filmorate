@@ -1,13 +1,12 @@
 package ru.yandex.practicum.filmorate.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.validators.BirthDate;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,9 +11,12 @@ import ru.yandex.practicum.filmorate.models.Film;
 import ru.yandex.practicum.filmorate.models.Mpa;
 import ru.yandex.practicum.filmorate.storages.FilmStorage;
 
-import java.sql.*;
 import java.sql.Date;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -20,6 +24,7 @@ public class FilmDbStorage implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public FilmDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -79,7 +84,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void deleteLike(Integer filmId, Integer userId) {
-
     }
 
     @Override

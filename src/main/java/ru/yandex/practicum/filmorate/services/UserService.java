@@ -8,8 +8,7 @@ import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.models.User;
 import ru.yandex.practicum.filmorate.storages.UserStorage;
 
-import java.util.*;
-
+import java.util.List;
 
 @Service
 @Slf4j

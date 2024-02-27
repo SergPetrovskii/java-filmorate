@@ -13,5 +13,4 @@ public interface FriendshipStorage {
     List<User> getFriendsUserForId(Integer id);
 
     List<User> getListFriend(int userId, int friendId);
-
 }
