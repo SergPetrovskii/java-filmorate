@@ -38,7 +38,7 @@ public class GenreDbStorage implements GenreStorage {
         String genre = "select * from GENRES where ID = ?";
         try {
             return jdbcTemplate.queryForObject(genre, this::findGenre, id);
-        } catch (RuntimeException e) {
+        } catch (GenreNotFoundException e) {
             throw new GenreNotFoundException("Нет такого жанра");
         }
     }

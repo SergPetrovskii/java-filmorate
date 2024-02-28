@@ -55,7 +55,6 @@ create table IF NOT EXISTS FRIENDSHIPS
     FRIENDSHIP_ID INTEGER auto_increment,
     USER_ID   INTEGER not null,
     FRIEND_ID INTEGER not null,
-    STATUS    BOOL,
     constraint USER_FRIEND_PK
         PRIMARY KEY (FRIENDSHIP_ID),
     constraint USER_FRIEND_USERS_FRIENDSHIP_ID_FK
@@ -79,3 +78,5 @@ create table IF NOT EXISTS LIKES
 
 create unique index if not exists USER_EMAIL_UINDEX on USERS (email);
 create unique index if not exists USER_LOGIN_UINDEX on USERS (login);
+create unique index if not exists FILMS_GENRES_UINDEX on FILMS_GENRES (FILM_ID, GENRE_ID);
+create unique index if not exists USER_FRIEND_UINDEX on FRIENDSHIPS (user_id, friend_id);

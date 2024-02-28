@@ -17,21 +17,21 @@ public class HandlerException {
             ValidationException.class, GenreNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse notFoundError(final RuntimeException e) {
-        log.debug("Ошибка пользователя.");
+        log.debug("Ошибка пользователя.{}", e.getMessage(), e);
         return new ErrorResponse("Ошибка пользователя", e.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse badRequest(final Exception e) {
-        log.debug("Ошибка валидации.");
+        log.debug("Ошибка валидации.{}", e.getMessage(), e);
         return new ErrorResponse("Ошибка валидации", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse serverError(final Throwable e) {
-        log.debug("Неизвестная ошибка.");
+        log.debug("Неизвестная ошибка.{}", e.getMessage(), e);
         return new ErrorResponse("Что-то пошло не так(", e.getMessage());
     }
 }

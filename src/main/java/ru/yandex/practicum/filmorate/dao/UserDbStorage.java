@@ -51,34 +51,19 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        if (getUserForId(user.getId()) == null) {
-            throw new UserNotFoundException("User not found");
-        }
         String sqlQuery = "update USERS set " +
                 "USERNAME = ?, LOGIN = ?, EMAIL = ?, BIRTHDAY = ?  " +
                 "where ID = ?";
-        jdbcTemplate.update(sqlQuery,
+        int rowUpdated = jdbcTemplate.update(sqlQuery,
                 user.getName(),
                 user.getLogin(),
                 user.getEmail(),
                 user.getBirthday(),
                 user.getId());
+        if (rowUpdated < 1) {
+            throw new UserNotFoundException("User not found");
+        }
         return user;
-    }
-
-    @Override
-    public void addFriend(Integer userId, Integer friendId) {
-
-    }
-
-    @Override
-    public void deleteFriend(Integer userId, Integer friendId) {
-
-    }
-
-    @Override
-    public List<User> getFriendsUserForId(Integer id) {
-        return null;
     }
 
     @Override
@@ -87,7 +72,7 @@ public class UserDbStorage implements UserStorage {
                 "from USERS where ID = ?";
         try {
             return jdbcTemplate.queryForObject(sqlQuery, this::findUserById, id);
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("User not found");
         }
     }

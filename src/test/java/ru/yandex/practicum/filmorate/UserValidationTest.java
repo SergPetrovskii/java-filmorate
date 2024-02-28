@@ -63,7 +63,7 @@ class UserValidationTest {
     }
 
     @Test
-    public void updeteUser() {
+    public void updateUser() {
         User newUser = userStorage.createUser(User.builder()
                 .name("dolore")
                 .login("nfffffffew dolore")

@@ -30,8 +30,8 @@ public class MpaDbStorage implements MpaStorage {
         String sqlMpa = "select * from MPA where MPA_ID = ?";
         try {
             return jdbcTemplate.queryForObject(sqlMpa, this::findMpa, id);
-        } catch (RuntimeException e) {
-            throw new ValidationException("Нет такого рейтинга");
+        } catch (ValidationException e) {
+            throw new ValidationException("Нет такого рейтинга" + id);
         }
     }
 

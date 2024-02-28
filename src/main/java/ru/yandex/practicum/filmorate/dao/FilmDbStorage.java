@@ -59,31 +59,21 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
-        if (getFilmForId(film.getId()) == null) {
-            throw new FilmNotFoundException("Нет такого фильма");
-        } else {
-            String sqlQuery = "update FILMS set " +
+        String sqlQuery = "update FILMS set " +
                     "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
                     "where ID = ?";
 
-            jdbcTemplate.update(sqlQuery,
+        int rowUpdated = jdbcTemplate.update(sqlQuery,
                     film.getName(),
                     film.getDescription(),
                     film.getReleaseDate(),
                     film.getDuration(),
                     film.getMpa().getId(),
                     film.getId());
-            return film;
+        if (rowUpdated < 1) {
+            throw new FilmNotFoundException("Film not found");
         }
-    }
-
-    @Override
-    public void addLike(Integer filmId, Integer userId) {
-
-    }
-
-    @Override
-    public void deleteLike(Integer filmId, Integer userId) {
+            return film;
     }
 
     @Override
@@ -92,12 +82,13 @@ public class FilmDbStorage implements FilmStorage {
                 "from  MPA, FILMS  where FILMS.MPA_ID = MPA.MPA_ID and FILMS.ID = ?";
         try {
             return jdbcTemplate.query(sqlQuery, this::findFilm, id).iterator().next();
-        } catch (RuntimeException e) {
-            throw new FilmNotFoundException("Не найден");
+        } catch (FilmNotFoundException e) {
+            throw new FilmNotFoundException("Фильм не найден");
         }
     }
 
-    private Film findFilm(ResultSet resultSet, int rowNum) throws SQLException {
+    @Override
+    public Film findFilm(ResultSet resultSet, int rowNum) throws SQLException {
         return Film.builder()
                 .id(resultSet.getInt("ID"))
                 .name(resultSet.getString("NAME"))

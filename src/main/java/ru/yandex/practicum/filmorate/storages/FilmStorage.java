@@ -2,6 +2,8 @@ package ru.yandex.practicum.filmorate.storages;
 
 import ru.yandex.practicum.filmorate.models.Film;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface FilmStorage {
@@ -11,9 +13,8 @@ public interface FilmStorage {
 
     Film updateFilm(Film film);
 
-    void addLike(Integer filmId, Integer userId);
-
-    void deleteLike(Integer filmId, Integer userId);
 
     Film getFilmForId(Integer id);
+
+    Film findFilm(ResultSet resultSet, int rowNum) throws SQLException;
 }

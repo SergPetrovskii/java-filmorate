@@ -14,17 +14,17 @@ import java.util.List;
 @Slf4j
 public class UserService {
 
-    private UserStorage userDbStorage;
+    private UserStorage userStorage;
     private FriendshipService friendshipService;
 
     @Autowired
-    public UserService(UserDbStorage userDbStorage, FriendshipService friendshipService) {
-        this.userDbStorage = userDbStorage;
+    public UserService(UserDbStorage userStorage, FriendshipService friendshipService) {
+        this.userStorage = userStorage;
         this.friendshipService = friendshipService;
     }
 
     public void userAddFriend(int userId, int friendId) {
-        if (userDbStorage.getUserForId(userId) == null || userDbStorage.getUserForId(friendId) == null) {
+        if (userStorage.getUserForId(userId) == null || userStorage.getUserForId(friendId) == null) {
             throw new UserNotFoundException("Пользователь с данным id не найден.");
         } else {
             friendshipService.addFriend(userId, friendId);
@@ -41,20 +41,20 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return userDbStorage.getAllUsers();
+        return userStorage.getAllUsers();
     }
 
     public User createUser(User user) {
         userCheck(user);
-        return userDbStorage.createUser(user);
+        return userStorage.createUser(user);
     }
 
     public User updateUser(User user) {
-        return userDbStorage.updateUser(user);
+        return userStorage.updateUser(user);
     }
 
     public User getUserForId(Integer userId) {
-        return userDbStorage.getUserForId(userId);
+        return userStorage.getUserForId(userId);
     }
 
     public List<User> getFriendsUserForId(Integer id) {
