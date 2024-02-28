@@ -6,53 +6,76 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.models.Film;
 import ru.yandex.practicum.filmorate.storages.FilmStorage;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import java.util.List;
 
 @Service
 @Slf4j
 public class FilmService {
-    private FilmStorage inMemoryFilmStorage;
+    private final FilmStorage filmStorage;
+    private final LikeService likeService;
+    private final GenreService genreService;
 
     @Autowired
-    public FilmService(FilmStorage inMemoryFilmStorage) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+    public FilmService(FilmStorage filmStorage, LikeService likeService, GenreService genreService) {
+        this.filmStorage = filmStorage;
+        this.likeService = likeService;
+        this.genreService = genreService;
     }
 
-    public Film addLike(Integer filmId, Integer userId) {
-        inMemoryFilmStorage.addLike(filmId, userId);
-        return inMemoryFilmStorage.getFilmForId(filmId);
+    public void addLike(Integer filmId, Integer userId) {
+        if (userId < 0) {
+            throw new ValidationException("id пользователя должен быть положительным");
+        } else {
+            likeService.addLike(filmId, userId);
+        }
     }
 
-    public Film deleteLike(Integer filmId, Integer userId) {
-        inMemoryFilmStorage.deleteLike(filmId, userId);
-        return inMemoryFilmStorage.getFilmForId(filmId);
+    public void deleteLike(Integer filmId, Integer userId) {
+        if (userId < 0) {
+            throw new ValidationException("id пользователя должен быть положительным");
+        } else {
+            likeService.deleteLike(filmId, userId);
+        }
     }
 
     public List<Film> getPopularFilms(Integer end) {
         log.debug("Получен список популярных фильмов колличесвом {} фильмов.", end);
-        return inMemoryFilmStorage.getAllFilms().stream()
-                .sorted((o1, o2) -> o2.getLike().size() - o1.getLike().size())
-                .limit(end)
-                .collect(Collectors.toList());
+        List<Film> films = likeService.getPopularFilms(end);
+        genreService.load(films);
+        return films;
     }
 
     public List<Film> getAllFilms() {
-        return inMemoryFilmStorage.getAllFilms();
+        List<Film> films = filmStorage.getAllFilms();
+        genreService.load(films);
+        return films;
     }
 
     public Film createFilms(Film film) {
-        return inMemoryFilmStorage.createFilms(film);
+        filmStorage.createFilms(film);
+        if (film.getGenres() != null) {
+            genreService.addGenre(film);
+        }
+        return film;
     }
 
     public Film updateFilm(Film film) {
-        return inMemoryFilmStorage.updateFilm(film);
+        if (film.getGenres() != null) {
+            genreService.deleteGenre(film.getId());
+            genreService.addGenre(film);
+        }
+        filmStorage.updateFilm(film);
+        return film;
     }
 
     public Film getFilmForId(Integer id) {
         if (id != null) {
-            return inMemoryFilmStorage.getFilmForId(id);
+            Film film = filmStorage.getFilmForId(id);
+            genreService.load(List.of(film));
+            return film;
+        } else {
+            throw new ValidationException("Необходимо указать id фильма - вместо id пришел null");
         }
-        throw new ValidationException("При получении id пришел null");
     }
 }

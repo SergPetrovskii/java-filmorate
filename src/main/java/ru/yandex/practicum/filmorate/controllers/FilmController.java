@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.IncorrectIDException;
 import ru.yandex.practicum.filmorate.models.Film;
 import ru.yandex.practicum.filmorate.services.FilmService;
 
@@ -41,33 +40,23 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public Film addLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
-        checkId(id, userId);
-        return filmService.addLike(id, userId);
+    public void addLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public Film deleteLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
-        checkId(id, userId);
-        return filmService.deleteLike(id, userId);
+    public void deleteLike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+        filmService.deleteLike(id, userId);
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@Positive @RequestParam(defaultValue = "10") Integer count) {
+    public List<Film> getPopularFilms(@Positive @RequestParam(value = "count", defaultValue = "10") Integer count) {
         return filmService.getPopularFilms(count);
     }
 
     @GetMapping("/{id}")
-    public Film getFilmForId(@PathVariable("id") int id) {
+    public Film getFilmForId(@PathVariable("id") Integer id) {
         return filmService.getFilmForId(id);
     }
 
-    private void checkId(Integer id, Integer userId) {
-        if (id <= 0) {
-            throw new IncorrectIDException("Параметр id фильма имеет отрицательное значение.");
-        }
-        if (userId <= 0) {
-            throw new IncorrectIDException("Параметр id пользователя при добавления лайка имеет отрицательное значение.");
-        }
-    }
 }
