@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -30,7 +31,7 @@ public class MpaDbStorage implements MpaStorage {
         String sqlMpa = "select * from MPA where MPA_ID = ?";
         try {
             return jdbcTemplate.queryForObject(sqlMpa, this::findMpa, id);
-        } catch (ValidationException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new ValidationException("Нет такого рейтинга" + id);
         }
     }

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class GenreDbStorage implements GenreStorage {
         String genre = "select * from GENRES where ID = ?";
         try {
             return jdbcTemplate.queryForObject(genre, this::findGenre, id);
-        } catch (GenreNotFoundException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new GenreNotFoundException("Нет такого жанра");
         }
     }

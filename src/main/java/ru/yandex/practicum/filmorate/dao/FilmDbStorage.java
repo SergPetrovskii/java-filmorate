@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -60,20 +61,20 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         String sqlQuery = "update FILMS set " +
-                    "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
-                    "where ID = ?";
+                "NAME = ?, DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, MPA_ID = ?  " +
+                "where ID = ?";
 
         int rowUpdated = jdbcTemplate.update(sqlQuery,
-                    film.getName(),
-                    film.getDescription(),
-                    film.getReleaseDate(),
-                    film.getDuration(),
-                    film.getMpa().getId(),
-                    film.getId());
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration(),
+                film.getMpa().getId(),
+                film.getId());
         if (rowUpdated < 1) {
             throw new FilmNotFoundException("Film not found");
         }
-            return film;
+        return film;
     }
 
     @Override
@@ -82,8 +83,8 @@ public class FilmDbStorage implements FilmStorage {
                 "from  MPA, FILMS  where FILMS.MPA_ID = MPA.MPA_ID and FILMS.ID = ?";
         try {
             return jdbcTemplate.query(sqlQuery, this::findFilm, id).iterator().next();
-        } catch (FilmNotFoundException e) {
-            throw new FilmNotFoundException("Фильм не найден");
+        } catch (NoSuchElementException e) {
+            throw new FilmNotFoundException("404. Film not found");
         }
     }
 

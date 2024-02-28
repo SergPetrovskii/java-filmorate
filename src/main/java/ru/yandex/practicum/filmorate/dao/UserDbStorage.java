@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -72,8 +73,8 @@ public class UserDbStorage implements UserStorage {
                 "from USERS where ID = ?";
         try {
             return jdbcTemplate.queryForObject(sqlQuery, this::findUserById, id);
-        } catch (UserNotFoundException e) {
-            throw new UserNotFoundException("User not found");
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("404. User not found");
         }
     }
 
